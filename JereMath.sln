@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JereMath.Library", "JereMath.Library\JereMath.Library.csproj", "{477ADB20-7238-40A3-AFB9-D1D8C19129AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JereMath.Tests", "JereMath.Tests\JereMath.Tests.csproj", "{3A54552F-EF49-4B0A-9B10-E1DA2524A97B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{477ADB20-7238-40A3-AFB9-D1D8C19129AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477ADB20-7238-40A3-AFB9-D1D8C19129AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477ADB20-7238-40A3-AFB9-D1D8C19129AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477ADB20-7238-40A3-AFB9-D1D8C19129AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A54552F-EF49-4B0A-9B10-E1DA2524A97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A54552F-EF49-4B0A-9B10-E1DA2524A97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A54552F-EF49-4B0A-9B10-E1DA2524A97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A54552F-EF49-4B0A-9B10-E1DA2524A97B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1930F1F2-3508-413D-AA19-D69D9C0254DB}
+	EndGlobalSection
+EndGlobal
