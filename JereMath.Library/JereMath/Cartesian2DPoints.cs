@@ -113,7 +113,7 @@ namespace JereMath.Library.JereMath
         }
         public override bool Equals(object obj)
         {
-            Cartesian2DPoints right = (Cartesian2DPoints)obj; //TODO widen scope
+            Cartesian2DPoints right = new Cartesian2DPoints(obj.ToString());
             var res = Points.Count == right.Points.Count && !Points.Except(right.Points).Any();
             return res;
         }

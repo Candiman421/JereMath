@@ -516,11 +516,13 @@ namespace JereMath.Library.JereMath
         {
             if (IsNumber)
             {
-                return AsNumber == (JereNumber)obj; //todo: test this
+                var result = AsNumber.Representation == obj.ToString();
+                return result;
             }
             else if (IsFigure2D)
             {
-                return AsFigure2D == (Cartesian2DPoints)obj;
+                var result = AsFigure2D.ToString() == obj.ToString();
+                return result;
             }
             else if (IsComplex)
             {
