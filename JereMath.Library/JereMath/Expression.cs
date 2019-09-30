@@ -9,22 +9,15 @@ namespace JereMath.Library.JereMath
         public string OriginalForm { get; set; }  // 1    2.3    3/4    3 3/4   3(3/4)    2xy^2   3(4 +ab)^3    14/3|3/5   y=mx+b
 
         public string Representation { get; set; }
-        //public string Simplified => DefaultRepresentation;
 
         public JereNumber AsNumber { get; set; }
         public bool IsNumber { get; set; }
-        // public bool IsNumber => AsNumber != null;
-        //public bool IsNumber => ReferenceEquals(this.IsNumber, null);
 
         public Cartesian2DPoints AsCartesian2dPoints { get; set; }
-         public bool IsCartesian2dPoints { get; set; }
-        //public bool IsCartesian2dPoints => AsCartesian2dPoints != null;
-       // public bool IsCartesian2dPoints => ReferenceEquals(this.AsCartesian2dPoints, null);
+        public bool IsCartesian2dPoints { get; set; }
 
         public DisplacementVector AsDisplacementVector { get; set; }
-         public bool IsDisplacementVector { get; set; }
-        //public bool IsDisplacementVector => AsDisplacementVector != null;
-        //public bool IsDisplacementVector => ReferenceEquals(this.AsDisplacementVector, null);
+        public bool IsDisplacementVector { get; set; }
 
         public bool IsComplex { get; set; }   //todo as more complicated algebraic forms
 
