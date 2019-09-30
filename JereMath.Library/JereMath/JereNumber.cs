@@ -1,4 +1,5 @@
-﻿using JereMath.Library.JereMath.Extensions;
+﻿using JereMath.Library.JereMath.Enums;
+using JereMath.Library.JereMath.Extensions;
 using JereMath.Library.JereMath.RegexUtil;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace JereMath.Library.JereMath
 
         private decimal? _numerator { get; set; }
         private decimal? _denominator { get; set; }
-        private bool? _isNegative { get; set; }
-        private bool? _isZero { get; set; }
+        private bool? _isNegative => Data?.IsNegative;
+        private bool? _isZero => Data?.IsZero;
 
         public Metadata Data { get; set; }
 
@@ -37,25 +38,35 @@ namespace JereMath.Library.JereMath
                 {
                     var namedCaptures = RegexPatterns.MixedNumberOrFractionOrNumber.MatchNamedCaptures(givenText);
 
-                    decimal.TryParse(namedCaptures["entireMixedNumbersNumber"].ToString(), out decimal number);
-                    decimal.TryParse(namedCaptures["entireNumerator"].ToString(), out decimal numerator);
-                    decimal.TryParse(namedCaptures["entireDenominator"].ToString(), out decimal denominator);
-
-                    if (number != 0)
+                    if (!string.IsNullOrEmpty(namedCaptures[RegexCaptureName.entireNumber.Name()].ToString()))
                     {
-                        if (numerator.IsNegative() || denominator.IsNegative()) //TODO debatable as to enable this
-                        {
-                            throw new ArgumentException("Invalid Format:\nValid Samples:\n2(3/5)\n-2 3/5\n3/5\n-3/5\n3/-5");
-                        }
+                        decimal.TryParse(namedCaptures[RegexCaptureName.entireNumber.Name()].ToString(), out decimal number);
 
-                        var absoluteValue = Math.Abs(number) * denominator + numerator;
-                        OriginalNumerator = number.IsNegative() ? -absoluteValue : absoluteValue;
-                        OriginalDenominator = denominator;
+                        OriginalNumerator = number;
+                        OriginalDenominator = 1;
                     }
                     else
                     {
-                        OriginalNumerator = numerator;
-                        OriginalDenominator = denominator;
+                        decimal.TryParse(namedCaptures[RegexCaptureName.entireMixedNumbersNumber.Name()].ToString(), out decimal number);
+                        decimal.TryParse(namedCaptures[RegexCaptureName.entireNumerator.Name()].ToString(), out decimal numerator);
+                        decimal.TryParse(namedCaptures[RegexCaptureName.entireDenominator.Name()].ToString(), out decimal denominator);
+
+                        if (number != 0)
+                        {
+                            if (numerator.IsNegative() || denominator.IsNegative()) //TODO debatable as to enable this
+                            {
+                                throw new ArgumentException("Invalid Format:\nValid Samples:\n2(3/5)\n-2 3/5\n3/5\n-3/5\n3/-5");
+                            }
+
+                            var absoluteValue = Math.Abs(number) * denominator + numerator;
+                            OriginalNumerator = number.IsNegative() ? -absoluteValue : absoluteValue;
+                            OriginalDenominator = denominator;
+                        }
+                        else
+                        {
+                            OriginalNumerator = numerator;
+                            OriginalDenominator = denominator;
+                        }
                     }
                 }
                 else
@@ -315,8 +326,7 @@ namespace JereMath.Library.JereMath
             if (left.IsUndefined) throw new ArithmeticException("left undefined: (operator ==)");
             if (right.IsUndefined) throw new ArithmeticException("right undefined: (operator ==)");
 
-            return left._numerator == right._numerator && left._denominator == right._denominator
-                || (bool)left._isZero && (bool)right._isZero;
+            return left.Representation == right.Representation;
         }
         public static bool operator !=(JereNumber left, JereNumber right)
         {
@@ -330,8 +340,8 @@ namespace JereMath.Library.JereMath
             if (left.IsUndefined) throw new ArithmeticException("left undefined: (operator <)");
             if (right.IsUndefined) throw new ArithmeticException("right undefined: (operator <)");
 
-            var leftTemp = left._numerator * right._denominator;
-            var rightTemp = right._numerator * left._denominator;
+            decimal? leftTemp = left._numerator * right._denominator;
+            decimal? rightTemp = right._numerator * left._denominator;
             return leftTemp < rightTemp;
         }
         public static bool operator >(JereNumber left, JereNumber right)
@@ -342,8 +352,8 @@ namespace JereMath.Library.JereMath
             if (left.IsUndefined) throw new ArithmeticException("left undefined: (operator >)");
             if (right.IsUndefined) throw new ArithmeticException("right undefined: (operator >)");
 
-            var leftTemp = left._numerator * right._denominator;
-            var rightTemp = right._numerator * left._denominator;
+            decimal? leftTemp = left._numerator * right._denominator;
+            decimal? rightTemp = right._numerator * left._denominator;
             return leftTemp > rightTemp;
         }
         public static bool operator <=(JereNumber left, JereNumber right)
@@ -354,8 +364,8 @@ namespace JereMath.Library.JereMath
             if (left.IsUndefined) throw new ArithmeticException("left undefined: (operator <=)");
             if (right.IsUndefined) throw new ArithmeticException("right undefined: (operator <=)");
 
-            var leftTemp = left._numerator * right._denominator;
-            var rightTemp = right._numerator * left._denominator;
+            decimal? leftTemp = left._numerator * right._denominator;
+            decimal? rightTemp = right._numerator * left._denominator;
             return leftTemp <= rightTemp;
         }
         public static bool operator >=(JereNumber left, JereNumber right)
@@ -366,8 +376,8 @@ namespace JereMath.Library.JereMath
             if (left.IsUndefined) throw new ArithmeticException("left undefined: (operator >=)");
             if (right.IsUndefined) throw new ArithmeticException("right undefined: (operator >=)");
 
-            var leftTemp = left._numerator * right._denominator;
-            var rightTemp = right._numerator * left._denominator;
+            decimal? leftTemp = left._numerator * right._denominator;
+            decimal? rightTemp = right._numerator * left._denominator;
             return leftTemp >= rightTemp;
         }
 

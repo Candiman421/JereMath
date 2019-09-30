@@ -18,8 +18,8 @@ namespace JereMath.Library.JereMath
             var newPoints = new List<Point>();
             foreach (var point in points)
             {
-                var x = point._x + a;
-                var y = point._y + b;
+                var x = new Expression(point._x) + a;
+                var y = new Expression(point._y) + b;
                 newPoints.Add(new Point(x, y));
                 //newPoints.Add(new Point(point.X + a, point.Y + b));
             }
@@ -40,6 +40,13 @@ namespace JereMath.Library.JereMath
                     newPoints.AddRange(points.Select(point => new Point(point._x, -point._y)));
                     break;
                 case LineType.Y_axis:
+                    foreach (Point point in points)
+                    {
+                        Expression x = point._x;
+                        var test = -point._x;
+                        var y = point._y;
+                        var test3 = new Point(test, y);
+                    }
                     newPoints.AddRange(points.Select(point => new Point(-point._x, point._y)));
                     break;
                 case LineType.Y_equals_X:

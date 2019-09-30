@@ -468,7 +468,7 @@ namespace JereMath.Tests
             var second = new JereNumber(1, 6);
             var result = first / second;
             Assert.IsTrue((bool)result.Data?.IsZero);
-            Assert.AreEqual(0, result);
+            Assert.AreEqual(result, 0);                      //TODO, how to flip these two arguments and not break?
             Assert.IsFalse(result.IsUndefined);
         }
 

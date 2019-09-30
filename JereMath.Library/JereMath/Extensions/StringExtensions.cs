@@ -9,7 +9,7 @@
 
         public static string RemoveLast(this string givenText)
         {
-            return givenText.Substring(0, givenText.Length);
+            return givenText.Substring(0, givenText.Length - 1);
         }
     }
 }

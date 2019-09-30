@@ -12,6 +12,16 @@ namespace JereMath.Tests
         [DataTestMethod]
         public void Translate()
         {
+            Expression figure = new Expression("(2,5)(1,3)(4,2)");
+            figure = figure.Translate("4|-1");
+            var expectedFigure = new Expression("(6,4)(5,2)(8,1)");
+            Assert.AreEqual(figure, expectedFigure);
+
+        }
+
+        [DataTestMethod]
+        public void Translate2()
+        {
             var figure = new Expression("(2,5)(1,3)(4,2)").Translate("4|-1");
             var expectedFigure = new Expression("(6,4)(5,2)(8,1)");
             Assert.AreEqual(figure, expectedFigure);
@@ -22,7 +32,7 @@ namespace JereMath.Tests
         public void TranslateConcise()
         {
             Cartesian2DPoints transformedFigure = new Cartesian2DPoints("(2,5)(1,3)(4,2)").Translate("4|-1");
-            Cartesian2DPoints expectedFigure = new Cartesian2DPoints("6,4:5,2:8,1");
+            Cartesian2DPoints expectedFigure = new Cartesian2DPoints("(6,4)(5,2)(8,1)");
             Assert.AreEqual(transformedFigure, expectedFigure);
         }
 
@@ -93,7 +103,7 @@ namespace JereMath.Tests
         public void CompositeTransformation()
         {
             //var figure = new Cartesian2DPoints(new List<Point>{new Point(-1,-8)});
-            var figure = new Cartesian2DPoints("-1,8");
+            var figure = new Cartesian2DPoints("(-1,8)");
             Cartesian2DPoints transformedFigure = figure.Reflect(LineType.Y_axis);  //(1,8)
             transformedFigure = transformedFigure.Translate("4|6");   //(5,14)
             string result = transformedFigure.ToString();
@@ -103,9 +113,9 @@ namespace JereMath.Tests
         [DataTestMethod]
         public void CompositeTransformationChainMethods()
         {
-            var figure = new Cartesian2DPoints("-1,8");
+            var figure = new Cartesian2DPoints("(-1,8)");
             Cartesian2DPoints transformedFigure = figure.Reflect(LineType.Y_axis).Translate("4|6");  //(5,14)
-            Cartesian2DPoints expectedFigure = new Cartesian2DPoints("5,14");
+            Cartesian2DPoints expectedFigure = new Cartesian2DPoints("(5,14)");
             Assert.AreEqual(transformedFigure, expectedFigure);
         }
 
@@ -113,7 +123,7 @@ namespace JereMath.Tests
         public void CompositeTransformationTriangle()
         {
             var figure = new Cartesian2DPoints("(-3.5,4)(-7,-3)(0,-3)");
-            figure = figure.Translate("7/3");
+            figure = figure.Translate("7|3");
             figure = figure.Reflect(LineType.X_axis);
 
             var expected = new Cartesian2DPoints("(3.5,-7)(0,0)(7,0)");
@@ -125,7 +135,7 @@ namespace JereMath.Tests
         [DataTestMethod]
         public void FindYInterceptFromSlopeAndPoint()
         {
-            var line = new Line("3,4");
+            var line = new Line("(3,4)");
             line.M = new Variable(2, "m");
             var test = line.IsValidLine;
             line.FindYIntercept();

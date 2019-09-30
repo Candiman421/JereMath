@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using JereMath.Library.JereMath.RegexUtil;
 using JereMath.Library.JereMath.Extensions;
+using System;
+using JereMath.Library.JereMath.Enums;
 
 namespace JereMath.Library.JereMath
 {
@@ -44,13 +46,43 @@ namespace JereMath.Library.JereMath
 
         public Line(string listPoints)
         {
-            if (RegexPatterns.Point2DList.IsMatch(listPoints))
+            try
             {
-                List<Dictionary<string, string>> namedCaptures = RegexPatterns.Point2DList.MatchNamedCapturesCollection(listPoints);
-                Points.AddRange(from pair in namedCaptures
-                                let x = new Expression(pair["x"])
-                                let y = new Expression(pair["y"])
-                                select new Point(x, y));
+                if (RegexPatterns.Point2DList.IsMatch(listPoints))// "(1,2)(1/2,1 3/4))(-.24,35.23)  <--- 1 or more points allowed, following Number format
+                {
+                    List<string> captures = RegexPatterns.Point2DList.GetCapturesByGroupName(listPoints, RegexCaptureName.point2dList);
+                    if (captures != null)
+                    {
+                        Points.AddRange(from capture in captures
+                                        let pair = capture.RemoveOuterParenthesis()
+                                        let singles = pair.Split(',')
+                                        let x = new Expression(singles[0])
+                                        let y = new Expression(singles[1])
+                                        let newPoint = new Point(x, y)
+                                        select newPoint);
+                        //foreach(var capture in captures)
+                        //{
+                        //    string pair = capture.RemoveOuterParenthesis();
+                        //    string[] singles = pair.Split(',');
+                        //    Expression x = new Expression(singles[0]);
+                        //    Expression y = new Expression(singles[1]);
+                        //    Point newPoint = new Point(x, y);
+                        //    Points.Add(newPoint);
+                        //}
+                    }
+                    else
+                    {
+                        throw new Exception($"Line: No captures found");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Line: Must use valid format for Point2DList instead of: {listPoints}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 

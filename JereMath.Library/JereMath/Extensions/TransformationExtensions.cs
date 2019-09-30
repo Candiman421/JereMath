@@ -55,7 +55,7 @@ namespace JereMath.Library.JereMath.Extensions
             if (RegexPatterns.DisplacementVector.IsMatch(displacementVectorFormat))
             {
                 var dvTemp = new DisplacementVector(displacementVectorFormat);
-                var result = (Expression)Transformation.Translate(figure.AsFigure2D.Points, dvTemp.TopHorizontal, dvTemp.BottomVertical);
+                var result = (Expression)Transformation.Translate(figure.AsCartesian2dPoints.Points, dvTemp.TopHorizontal, dvTemp.BottomVertical);
                 return result;
             }
             else
@@ -66,25 +66,25 @@ namespace JereMath.Library.JereMath.Extensions
 
         public static Expression Translate(this Expression figure, DisplacementVector displacementVector)
         {
-            var result = (Expression)Transformation.Translate(figure.AsFigure2D.Points, displacementVector.TopHorizontal, displacementVector.BottomVertical);
+            var result = (Expression)Transformation.Translate(figure.AsCartesian2dPoints.Points, displacementVector.TopHorizontal, displacementVector.BottomVertical);
             return result;
         }
 
         public static Expression Reflect(this Expression figure, LineType lineType)
         {
-            var result = (Expression)Transformation.Reflect(figure.AsFigure2D.Points, lineType);
+            var result = (Expression)Transformation.Reflect(figure.AsCartesian2dPoints.Points, lineType);
             return result;
         }
 
         public static Expression Rotate(this Expression figure, DegreeType degreeType)
         {
-            var result = (Expression)Transformation.Rotate(figure.AsFigure2D.Points, degreeType);
+            var result = (Expression)Transformation.Rotate(figure.AsCartesian2dPoints.Points, degreeType);
             return result;
         }
 
         public static Expression Dilate(this Expression figure, Expression multiplier)
         {
-            var result = (Expression)Transformation.Dilate(figure.AsFigure2D.Points, multiplier);
+            var result = (Expression)Transformation.Dilate(figure.AsCartesian2dPoints.Points, multiplier);
             return result;
         }
     }

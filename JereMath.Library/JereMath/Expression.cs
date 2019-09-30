@@ -12,13 +12,19 @@ namespace JereMath.Library.JereMath
         //public string Simplified => DefaultRepresentation;
 
         public JereNumber AsNumber { get; set; }
-        public bool IsNumber => AsNumber != null;
+        public bool IsNumber { get; set; }
+        // public bool IsNumber => AsNumber != null;
+        //public bool IsNumber => ReferenceEquals(this.IsNumber, null);
 
-        public Cartesian2DPoints AsFigure2D { get; set; }
-        public bool IsFigure2D => AsFigure2D != null;
+        public Cartesian2DPoints AsCartesian2dPoints { get; set; }
+         public bool IsCartesian2dPoints { get; set; }
+        //public bool IsCartesian2dPoints => AsCartesian2dPoints != null;
+       // public bool IsCartesian2dPoints => ReferenceEquals(this.AsCartesian2dPoints, null);
 
         public DisplacementVector AsDisplacementVector { get; set; }
-        public bool IsDisplacementVector => AsDisplacementVector != null;
+         public bool IsDisplacementVector { get; set; }
+        //public bool IsDisplacementVector => AsDisplacementVector != null;
+        //public bool IsDisplacementVector => ReferenceEquals(this.AsDisplacementVector, null);
 
         public bool IsComplex { get; set; }   //todo as more complicated algebraic forms
 
@@ -29,16 +35,19 @@ namespace JereMath.Library.JereMath
             if (RegexPatterns.MixedNumberOrFractionOrNumber.IsMatch(originalForm))
             {
                 AsNumber = new JereNumber(originalForm);
+                IsNumber = true;
                 Representation = AsNumber.Representation;
             }
             else if (RegexPatterns.Point2DList.IsMatch(originalForm))
             {
-                AsFigure2D = new Cartesian2DPoints(originalForm);
-                Representation = AsFigure2D.ToString();
+                AsCartesian2dPoints = new Cartesian2DPoints(originalForm);
+                IsCartesian2dPoints = true;
+                Representation = AsCartesian2dPoints.ToString();
             }
             else if (RegexPatterns.DisplacementVector.IsMatch(originalForm))
             {
                 AsDisplacementVector = new DisplacementVector(originalForm);
+                IsDisplacementVector = true;
             }
             else
             {
@@ -56,7 +65,7 @@ namespace JereMath.Library.JereMath
                 {
                     return new Expression((-right.AsNumber).ToString());
                 }
-                else if (right.IsFigure2D)
+                else if (right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator -)");
                 }
@@ -84,7 +93,7 @@ namespace JereMath.Library.JereMath
                 {
                     return new Expression((left.AsNumber - right.AsNumber).ToString());
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator -)");
                 }
@@ -112,7 +121,7 @@ namespace JereMath.Library.JereMath
                 {
                     return new Expression((left.AsNumber + right.AsNumber).ToString());
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator +)");
                 }
@@ -140,7 +149,7 @@ namespace JereMath.Library.JereMath
                 {
                     return new Expression((left.AsNumber * right.AsNumber).ToString());
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator *)");
                 }
@@ -168,7 +177,7 @@ namespace JereMath.Library.JereMath
                 {
                     return new Expression((left.AsNumber / right.AsNumber).ToString());
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator /)");
                 }
@@ -196,9 +205,9 @@ namespace JereMath.Library.JereMath
                 {
                     return left.AsNumber == right.AsNumber;
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
-                    return left.IsFigure2D == right.IsFigure2D;
+                    return left.IsCartesian2dPoints == right.IsCartesian2dPoints;
                 }
                 else if (left.IsComplex)
                 {
@@ -228,7 +237,7 @@ namespace JereMath.Library.JereMath
                 {
                     return left.AsNumber < right.AsNumber;
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator <)");
                 }
@@ -256,7 +265,7 @@ namespace JereMath.Library.JereMath
                 {
                     return left.AsNumber > right.AsNumber;
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator >)");
                 }
@@ -284,7 +293,7 @@ namespace JereMath.Library.JereMath
                 {
                     return left.AsNumber <= right.AsNumber;
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator <=)");
                 }
@@ -312,7 +321,7 @@ namespace JereMath.Library.JereMath
                 {
                     return left.AsNumber >= right.AsNumber;
                 }
-                else if (left.IsFigure2D && right.IsFigure2D)
+                else if (left.IsCartesian2dPoints && right.IsCartesian2dPoints)
                 {
                     throw new NotImplementedException("IsFigure2D Expressions here. (operator >=)");
                 }
@@ -485,9 +494,9 @@ namespace JereMath.Library.JereMath
         {
             if (ReferenceEquals(right, null)) throw new ArgumentNullException("right: (implicit Expression to Figure2D)");
 
-            if (right.IsFigure2D)
+            if (right.IsCartesian2dPoints)
             {
-                return right.AsFigure2D;
+                return right.AsCartesian2dPoints;
             }
             else
             {
@@ -519,9 +528,9 @@ namespace JereMath.Library.JereMath
                 var result = AsNumber.Representation == obj.ToString();
                 return result;
             }
-            else if (IsFigure2D)
+            else if (IsCartesian2dPoints)
             {
-                var result = AsFigure2D.ToString() == obj.ToString();
+                var result = AsCartesian2dPoints.ToString() == obj.ToString();
                 return result;
             }
             else if (IsComplex)

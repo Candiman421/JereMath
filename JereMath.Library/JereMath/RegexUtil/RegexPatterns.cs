@@ -7,14 +7,14 @@ namespace JereMath.Library.JereMath.RegexUtil
 {
     public static class RegexPatterns
     {
-        public static Regex Number = new Regex(@"
+        public static Regex Number = new Regex(@"^
                                                  (?<entireNumber>
                                                    (?<numberNegative>-|)
                                                    (?<number>\d*\.?\d+)
                                                  )
-                                               ", RegexOptions.IgnorePatternWhitespace);
+                                               $", RegexOptions.IgnorePatternWhitespace);
 
-        public static Regex MixedNumberOrFractionOrNumber = new Regex(@"
+        public static Regex MixedNumberOrFractionOrNumber = new Regex(@"^
                                                                        (?: 
                                                                          (?<entireMixedNumber>                                                                             
                                                                            (?:
@@ -45,13 +45,13 @@ namespace JereMath.Library.JereMath.RegexUtil
                                                                            (?<number>\d*\.?\d+)
                                                                          )
                                                                        )
-                                                                     ", RegexOptions.IgnorePatternWhitespace);
+                                                                     $", RegexOptions.IgnorePatternWhitespace);
 
         //public static Regex Point2D = new Regex(@"
         //public static Regex Point3D = new Regex(@"
         //public static Regex Line = new Regex(@"
         //public static Regex Cartesian2DPoints = new Regex(@"
-        public static Regex Point2DList = new Regex(@"
+        public static Regex Point2DList = new Regex(@"^
                                                    (?<point2dList>
                                                      \(
                                                         (?<x>
@@ -117,9 +117,9 @@ namespace JereMath.Library.JereMath.RegexUtil
                                                         )
                                                    \)
                                                  )+                                       
-                                               ", RegexOptions.IgnorePatternWhitespace);
+                                               $", RegexOptions.IgnorePatternWhitespace);
 
-        public static Regex Point3DList = new Regex(@"
+        public static Regex Point3DList = new Regex(@"^
                                                    (?<point3dList>
                                                      \(
                                                         (?: 
@@ -216,9 +216,9 @@ namespace JereMath.Library.JereMath.RegexUtil
                                                         )
                                                    \)
                                                  )+                                       
-                                               ", RegexOptions.IgnorePatternWhitespace);
+                                               $", RegexOptions.IgnorePatternWhitespace);
 
-        public static Regex DisplacementVector = new Regex(@"
+        public static Regex DisplacementVector = new Regex(@"^
                                                              (?<displacementVector>
                                                                (?<horizontalTop> 
                                                                  (?<entireMixedNumberX>                                                                             
@@ -282,6 +282,6 @@ namespace JereMath.Library.JereMath.RegexUtil
                                                                  )
                                                                )
                                                              )                                       
-                                                          ", RegexOptions.IgnorePatternWhitespace);
+                                                          $", RegexOptions.IgnorePatternWhitespace);
     }
 }

@@ -4,6 +4,8 @@ using System.Text;
 using System.Linq;
 using JereMath.Library.JereMath.RegexUtil;
 using JereMath.Library.JereMath.Extensions;
+using System.Text.RegularExpressions;
+using JereMath.Library.JereMath.Enums;
 
 namespace JereMath.Library.JereMath
 {
@@ -13,6 +15,7 @@ namespace JereMath.Library.JereMath
 
         public Point AsPoint { get; set; }
         public Line AsLine { get; set; }
+        public bool As2dFigure { get; set; }
         public bool AsTriangle { get; set; }
         public bool AsFourSided { get; set; }
         public bool IsIrregularFigure { get; set; }
@@ -20,6 +23,7 @@ namespace JereMath.Library.JereMath
         public Cartesian2DPoints(List<Point> listPoints)
         {
             Points = listPoints;
+            AnalyzePoints();
         }
 
         public Cartesian2DPoints(string listPoints) //(pointX,pointY)(pointX,pointY)(pointX,pointY)
@@ -28,16 +32,34 @@ namespace JereMath.Library.JereMath
             {
                 if (RegexPatterns.Point2DList.IsMatch(listPoints))// "(1,2)(1/2,1 3/4))(-.24,35.23)  <--- 1 or more points allowed, following Number format
                 {
-                    Points.AddRange(from pair in listPoints.TopLevelParentheticallyClosedGroups().RemoveOuterParenthesis()
-                                    let singles = pair.Split(',')
-                                    let x = new Expression(singles[0])
-                                    let y = new Expression(singles[1])
-                                    let newPoint = new Point(x, y)
-                                    select newPoint);
+                    List<string> captures = RegexPatterns.Point2DList.GetCapturesByGroupName(listPoints, RegexCaptureName.point2dList);
+                    if (captures != null)
+                    {
+                        Points.AddRange(from capture in captures
+                                        let pair = capture.RemoveOuterParenthesis()
+                                        let singles = pair.Split(',')
+                                        let x = new Expression(singles[0])
+                                        let y = new Expression(singles[1])
+                                        let newPoint = new Point(x, y)
+                                        select newPoint);
+                        //foreach(var capture in captures)
+                        //{
+                        //    string pair = capture.RemoveOuterParenthesis();
+                        //    string[] singles = pair.Split(',');
+                        //    Expression x = new Expression(singles[0]);
+                        //    Expression y = new Expression(singles[1]);
+                        //    Point newPoint = new Point(x, y);
+                        //    Points.Add(newPoint);
+                        //}
+                    }
+                    else
+                    {
+                        throw new Exception($"Cartesian2DPoints: No captures found");
+                    }
                 }
                 else
                 {
-                    throw new Exception($"Must use valid format for Point2DList instead of: {listPoints}");
+                    throw new Exception($"Cartesian2DPoints: Must use valid format for Point2DList instead of: {listPoints}");
                 }
             }
             catch (Exception ex)
@@ -45,6 +67,11 @@ namespace JereMath.Library.JereMath
                 Console.WriteLine(ex.Message);
             }
 
+            AnalyzePoints();
+        }
+
+        private void AnalyzePoints()
+        {
             if (Points.Count == 1)
             {
                 AsPoint = new Point(Points[0]._x, Points[0]._y);
@@ -55,7 +82,8 @@ namespace JereMath.Library.JereMath
             }
             else
             {
-                throw new NotImplementedException("soooo many more to do");
+                As2dFigure = true;
+                //TODO: evaluate named 2dFigures here
             }
         }
 

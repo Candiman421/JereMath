@@ -79,5 +79,20 @@ namespace JereMath.Library.JereMath.Extensions
                 throw new Exception("Must have outer parenthesis to remove them");
             }
         }
+
+        public static string RemoveOuterParenthesisIfExists(this string parentheticalGroup)
+        {
+            var retVal = parentheticalGroup;
+            if (retVal.StartsWith("("))
+            {
+                retVal = retVal.RemoveFirst();
+            }
+
+            if (retVal.StartsWith(")"))
+            {
+                retVal = retVal.RemoveLast();
+            }
+            return retVal;
+        }
     }
 }
