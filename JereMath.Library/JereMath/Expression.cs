@@ -366,6 +366,10 @@ namespace JereMath.Library.JereMath
         {
             return new Expression(new Cartesian2DPoints(_points).ToString());
         }
+        public static implicit operator Expression(Cartesian2DPoints cartesian2D) //line?
+        {
+            return new Expression(cartesian2D.ToString());
+        }
 
         public static implicit operator string(Expression right)
         {
