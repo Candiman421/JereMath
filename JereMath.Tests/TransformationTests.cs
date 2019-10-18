@@ -58,7 +58,7 @@ namespace JereMath.Tests
         }
 
         [DataTestMethod]  //FAILS
-        public void TranslateExpressionComparedToStringFlippedParameters()
+        public void TranslateExpressionComparedToStringFlippedAreEqualArguments()
         {
             Expression transformedFigure = new Cartesian2DPoints("(2,5)(1,3)(4,2)").Translate("4|-1");
             Assert.AreEqual("(6,4)(5,2)(8,1)", transformedFigure);
